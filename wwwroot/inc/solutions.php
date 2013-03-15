@@ -366,7 +366,7 @@ function proxyStaticURI ($URI)
 	if
 	(
 		! preg_match (RE_STATIC_URI, $URI, $matches)
-		or ! in_array ($matches[1], array ('pix', 'css', 'js'))
+		or ! in_array ($matches[1], array ('img', 'css', 'js'))
 		or ! array_key_exists (strtolower ($matches[2]), $content_type)
 	)
 		printStatic404();

@@ -103,9 +103,9 @@ $user_defined_atags = array();
 // This also can be modified in local.php.
 $pageheaders = array
 (
-	100 => "<link rel='ICON' type='image/x-icon' href='?module=chrome&uri=pix/favicon.ico' />",
+	100 => "<link rel='ICON' type='image/x-icon' href='?module=chrome&uri=img/favicon.ico' />",
 );
-addCSS ('css/pi.css');
+addCSS ('css/main.css');
 
 if (!isset ($script_mode) or $script_mode !== TRUE)
 {

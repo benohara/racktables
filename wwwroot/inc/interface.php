@@ -85,31 +85,125 @@ function renderQuickLinks()
 	global $quick_links;
 	if (! isset ($quick_links))
 		$quick_links = getConfiguredQuickLinks();
-	echo '<ul class="qlinks">';
 	foreach ($quick_links as $link)
 		echo '<li><a href="' . $link['href'] . '">' . str_replace (' ', '&nbsp;', $link['title']) . '</a></li>';
-	echo '</ul>';
 }
 
 function renderInterfaceHTML ($pageno, $tabno, $payload)
 {
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head><title><?php echo getTitle ($pageno); ?></title>
-<?php printPageHeaders(); ?>
-</head>
-<body>
-<div class="maintable">
- <div class="mainheader">
-  <div style="float: right" class=greeting><a href='index.php?page=myaccount&tab=default'><?php global $remote_displayname; echo $remote_displayname ?></a> [ <a href='?logout'>logout</a> ]</div>
- <?php echo getConfigVar ('enterprise') ?> RackTables <a href="http://racktables.org" title="Visit RackTables site"><?php echo CODE_VERSION ?></a><?php renderQuickLinks() ?>
- </div>
- <div class="menubar"><?php showPathAndSearch ($pageno); ?></div>
- <div class="tabbar"><?php showTabs ($pageno, $tabno); ?></div>
- <div class="msgbar"><?php showMessageOrError(); ?></div>
- <div class="pagebar"><?php echo $payload; ?></div>
-</div>
-</body>
+?><!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title><?php echo getTitle ($pageno); ?></title>
+    <?php printPageHeaders(); ?>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Le styles -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <style type="text/css">
+
+      /* Sticky footer styles
+      -------------------------------------------------- */
+
+      html,
+      body {
+        height: 100%;
+        /* The html and body elements cannot have any padding or margin. */
+      }
+
+      /* Wrapper for page content to push down footer */
+      #wrap {
+        min-height: 100%;
+        height: auto !important;
+        height: 100%;
+        /* Negative indent footer by it's height */
+        margin: 0 auto -60px;
+      }
+
+      /* Set the fixed height of the footer here */
+      #push,
+      #footer {
+        height: 60px;
+      }
+      #footer {
+        background-color: #f5f5f5;
+      }
+
+      /* Lastly, apply responsive CSS fixes as necessary */
+      @media (max-width: 767px) {
+        #footer {
+          margin-left: -20px;
+          margin-right: -20px;
+          padding-left: 20px;
+          padding-right: 20px;
+        }
+      }
+
+      #wrap > .container {
+        padding-top: 60px;
+      }
+      .container .credit {
+        margin: 20px 0;
+      }
+
+
+    </style>
+    <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Fav and touch icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="img/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="img/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="img/favicon.ico">
+  </head>
+
+  <body>
+    <div id="wrap" style="padding-top: 90px;">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="brand" href="#">Racktables</a>
+                    <div class="nav-collapse collapse">
+                        <ul class="nav">
+                        <?php renderQuickLinks() ?>
+                        </ul>
+                        <?php showSearch(); ?>
+                    </div><!--/.nav-collapse -->
+                </div>
+            </div>
+            <?php showPathAndUser ($pageno); ?>
+        </div>
+        <div class="container-fluid">
+            <div class="row-fluid">
+                <?php showTabs ($pageno, $tabno); ?>
+                <?php echo $payload; ?>
+            </div>
+        </div>
+
+        <div id="push"></div>
+    </div>
+
+    <div id="footer">
+        <div class="container">
+            <p class="muted credit"><?php echo getConfigVar ('enterprise') ?> RackTables <a href="http://racktables.org" title="Visit RackTables site"><?php echo CODE_VERSION ?></a>.</p>
+        </div>
+    </div>
+    <script src="js/vendor/bootstrap.js"></script>
+  </body>
 </html>
 <?php
 }
@@ -129,8 +223,7 @@ function renderIndex ()
 {
 	global $indexlayout;
 ?>
-<table border=0 cellpadding=0 cellspacing=0 width='100%'>
-	<tr>
+<table border=0 cellpadding=0 cellspacing=0 width='100%'tTitl<tr>
 		<td>
 			<div style='text-align: center; margin: 10px; '>
 			<table width='100%' cellspacing=0 cellpadding=20 class=mainmenu border=0>
@@ -1791,7 +1884,7 @@ function renderPortsInfo($object_id)
 			echo "<tr class='row_$order'>";
 			$order = $nextorder[$order];
 			echo '<td>' . $pn;
-			echo '<td>' . '<img width=16 height=16 src="?module=chrome&uri=pix/' . $img_filename . '">';
+			echo '<td>' . '<img width=16 height=16 src="?module=chrome&uri=img/' . $img_filename . '">';
 			echo '<td>' . $link['status'];
 			$info = '';
 			if (isset ($link['speed']))
@@ -2023,21 +2116,20 @@ function renderMolecule ($mdata, $object_id)
 
 function renderDepot ()
 {
-	global $pageno, $nextorder;
+	global $pageno;
 	$cellfilter = getCellFilter();
 	$objects = filterCellList (listCells ('object'), $cellfilter['expression']);
 
-	echo "<table border=0 class=objectview>\n";
-	echo "<tr><td class=pcleft>";
+    echo "<div class=row-fluid>";
 
 	if (! renderEmptyResults ($cellfilter, 'objects', count($objects)))
 	{
 		if (count($objects) > 0)
 		{
-			startPortlet ('Objects (' . count ($objects) . ')');
-			echo '<br><br><table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
+	        echo "<div class=span9>";
+            startPortlet ('Objects (' . count ($objects) . ')');
+			echo '<br><br><table class="table table-striped">';
 			echo '<tr><th>Common name</th><th>Visible label</th><th>Asset tag</th><th>Row/Rack or Container</th></tr>';
-			$order = 'odd';
 			# gather IDs of all objects and fetch rackspace info in one pass
 			$idlist = array();
 			foreach ($objects as $obj)
@@ -2045,7 +2137,7 @@ function renderDepot ()
 			$mountinfo = getMountInfo ($idlist);
 			foreach ($objects as $obj)
 			{
-				echo "<tr class='row_${order} tdleft' valign=top><td>" . mkA ("<strong>${obj['dname']}</strong>", 'object', $obj['id']);
+				echo "<tr><td>" . mkA ("<strong>${obj['dname']}</strong>", 'object', $obj['id']);
 				if (count ($obj['etags']))
 					echo '<br><small>' . serializeTags ($obj['etags'], makeHref(array('page'=>$pageno, 'tab'=>'default')) . '&') . '</small>';
 				echo "</td><td>${obj['label']}</td>";
@@ -2060,19 +2152,20 @@ function renderDepot ()
 						$places[] = mkA ($mi['row_name'], 'row', $mi['row_id']) . '/' . mkA ($mi['rack_name'], 'rack', $mi['rack_id']);
 				echo "<td>" . implode (', ', $places) . '</td>';
 				echo '</tr>';
-				$order = $nextorder[$order];
 			}
 			echo '</table>';
-			finishPortlet();
+            finishPortlet();
+            echo "</div>";
+	        echo "<div class=span3>";
+
+	        renderCellFilterPortlet ($cellfilter, 'object', $objects);
+	        echo "</div>";
+
 		}
 		else
 			echo '<h2>No objects exist</h2>';
 	}
 
-	echo "</td><td class=pcright width='25%'>";
-
-	renderCellFilterPortlet ($cellfilter, 'object', $objects);
-	echo "</td></tr></table>\n";
 }
 
 // This function returns TRUE if the result set is too big to be rendered, and no filter is set.
@@ -2271,8 +2364,8 @@ function renderIPSpace()
 	$eid = isset ($_REQUEST['eid']) ? $_REQUEST['eid'] : 0;
 	$tree = prepareIPTree ($netlist, $eid);
 
-	echo "<table border=0 class=objectview>\n";
-	echo "<tr><td class=pcleft>";
+	echo "<div class=row-fluid>\n";
+	echo "<div class=span9>";
 	if (! renderEmptyResults($cellfilter, 'IP nets', count($tree)))
 	{
 		startPortlet ("networks (${netcount})");
@@ -2295,10 +2388,10 @@ function renderIPSpace()
 			$netinfo = spotEntity ($realm, $eid);
 			echo "expanding ${netinfo['ip']}/${netinfo['mask']} ($auto / $all / $none)";
 		}
-		echo "</h4><table class='widetable' border=0 cellpadding=5 cellspacing=0 align='center'>\n";
-		echo "<tr><th>prefix</th><th>name/tags</th><th>capacity</th>";
+		echo "</h4><table class='table table-striped'>\n";
+		echo "<tr><th>Prefix</th><th>Name/Tags</th><th>Capacity</th>";
 		if (getConfigVar ('IPV4_TREE_RTR_AS_CELL') != 'none')
-			echo "<th>routed by</th>";
+			echo "<th>Routed By</th>";
 		echo "</tr>\n";
 		$baseurl = makeHref(array('page'=>$pageno, 'tab'=>$tabno)) . $cellfilter['urlextra'];
 		renderIPSpaceRecords ($tree, $baseurl, $eid);
@@ -2306,9 +2399,10 @@ function renderIPSpace()
 		finishPortlet();
 	}
 
-	echo '</td><td class=pcright>';
+	echo '</div>';
+	echo '<div class=span3>';
 	renderCellFilterPortlet ($cellfilter, 'ipv4net', $netlist);
-	echo "</td></tr></table>\n";
+	echo "</div></div>\n";
 }
 
 function renderIPSpaceEditor()
@@ -3125,33 +3219,37 @@ function renderAddMultipleObjectsForm ()
 		// remove from list if type should be excluded
 		if ($key > 0 && in_array($key, $exclude_typelist))
 			unset($phys_typelist['other'][$key]);
-	}
+    }
+
+    echo "<div class=row-fluid>";
+    echo "<div class=span9>";
+
 	startPortlet ('Physical objects');
 	printOpFormIntro ('addObjects');
-	echo '<table border=0 align=center>';
+	echo '<table class="table table-striped">';
 	echo "<tr><th>Object type</th><th>Common name</th><th>Visible label</th>";
-	echo "<th>Asset tag</th><th>Tags</th></tr>\n";
+	echo "<th>Asset tag</th></tr>\n";
 	for ($i = 0; $i < $max; $i++)
 	{
 		echo '<tr><td>';
 		// Don't employ DEFAULT_OBJECT_TYPE to avoid creating ghost records for pre-selected empty rows.
 		printNiftySelect ($phys_typelist, array ('name' => "${i}_object_type_id", 'tabindex' => $tabindex), 0);
 		echo '</td>';
-		echo "<td><input type=text size=30 name=${i}_object_name tabindex=${tabindex}></td>";
-		echo "<td><input type=text size=30 name=${i}_object_label tabindex=${tabindex}></td>";
-		echo "<td><input type=text size=20 name=${i}_object_asset_no tabindex=${tabindex}></td>";
-		if ($i == 0)
-		{
-			echo "<td valign=top rowspan=${max}>";
-			renderNewEntityTags ('object');
-			echo "</td>\n";
-		}
+		echo "<td><input type=text name=${i}_object_name tabindex=${tabindex}></td>";
+		echo "<td><input type=text name=${i}_object_label tabindex=${tabindex}></td>";
+		echo "<td><input type=text name=${i}_object_asset_no tabindex=${tabindex}></td>";
 		echo "</tr>\n";
 		$tabindex++;
 	}
-	echo "<tr><td class=submit colspan=5><input type=submit name=got_fast_data value='Go!'></td></tr>\n";
-	echo "</form></table>\n";
+	echo "</table>\n";
+	echo "<input type=submit class=btn value='Go!'>";
 	finishPortlet();
+    echo '</div>';
+    echo '<div class=span3>';
+		renderNewEntityTags ('object');
+
+	echo "</form>\n";
+	echo "</div>\n";
 
 	// create a list containing only virtual object types
 	$virt_typelist = $typelist;
@@ -4457,29 +4555,30 @@ function dragon ()
 
 function renderUIConfig ()
 {
-	global $configCache, $nextorder;
+    global $configCache, $nextorder;
+    echo "<div class=row-fluid>";
 	startPortlet ('Current configuration');
-	echo '<table class=cooltable border=0 cellpadding=5 cellspacing=0 align=center width="70%">';
+	echo '<table class="table table-striped">';
 	echo '<tr><th class=tdleft>Option</th><th class=tdleft>Value</th></tr>';
-	$order = 'odd';
 	foreach ($configCache as $v)
 	{
 		if ($v['is_hidden'] != 'no')
 			continue;
-		echo "<tr class=row_${order}>";
+		echo "<tr>";
 		echo "<td nowrap valign=top class=tdright>${v['description']}</td>";
 		echo "<td valign=top class=tdleft>${v['varvalue']}</td></tr>";
-		$order = $nextorder[$order];
 	}
 	echo "</table>\n";
-	finishPortlet();
+    finishPortlet();
+    echo "</div>";
 }
 
 function renderUIConfigEditForm ()
 {
 	global $configCache;
+    echo "<div class=row-fluid>";
 	startPortlet ('Current configuration');
-	echo "<table cellspacing=0 cellpadding=5 align=center class=widetable width='50%'>\n";
+	echo "<table class='table table-striped'>\n";
 	echo "<tr><th class=tdleft>Option</th>";
 	echo "<th class=tdleft>Value</th></tr>";
 	printOpFormIntro ('upd');
@@ -4500,7 +4599,9 @@ function renderUIConfigEditForm ()
 	printImageHREF ('SAVE', 'Save changes', TRUE);
 	echo "</td></tr>";
 	echo "</form>";
+    echo "</table>";
 	finishPortlet();
+    echo "</div>";
 }
 
 function renderSNMPPortFinder ($object_id)
@@ -4819,8 +4920,8 @@ END
 		global $taglist;
 		printOpFormIntro ('createTag');
 		echo '<tr>';
-		echo '<td align=left style="padding-left: 16px;">' . getImageHREF ('create', 'Create tag', TRUE) . '</td>';
-		echo '<td><input type=text size=48 name=tag_name tabindex=100></td>';
+		echo '<td align=left>' . getImageHREF ('create', 'Create tag', TRUE) . '</td>';
+		echo '<td><input type=text name=tag_name tabindex=100></td>';
 		echo '<td class=tdleft>' . getSelect (array ('yes' => 'yes', 'no' => 'no'), array ('name' => 'is_assignable', 'tabindex' => 105), 'yes') . '</td>';
 		echo '<td>' . getSelect ($options, array ('name' => 'parent_id', 'tabindex' => 110)) . '</td>';
 		echo '<td>' . getImageHREF ('create', 'Create tag', TRUE, 120) . '</td>';
@@ -4836,8 +4937,8 @@ END
 	if (count ($otags))
 	{
 		startPortlet ('fallen leaves');
-		echo "<table cellspacing=0 cellpadding=5 align=center class=widetable>\n";
-		echo '<tr class=trerror><th>tag name</th><th>parent tag</th><th>&nbsp;</th></tr>';
+		echo "<table>";
+		echo '<tr class=trerror><th>Tag name</th><th>Parent Tag</th><th>&nbsp;</th></tr>';
 		foreach ($otags as $taginfo)
 		{
 			printOpFormIntro ('updateTag', array ('tag_id' => $taginfo['id'], 'tag_name' => $taginfo['tag']));
@@ -4852,8 +4953,8 @@ END
 	}
 
 	startPortlet ('tag tree');
-	echo "<table cellspacing=0 cellpadding=5 align=center class=widetable>\n";
-	echo '<tr><th>&nbsp;</th><th>tag name</th><th>assignable</th><th>parent tag</th><th>&nbsp;</th></tr>';
+	echo "<table class='table table-striped'>\n";
+	echo '<tr><th>&nbsp;</th><th>Tag Name</th><th>Assignable</th><th>Parent Tag</th><th>&nbsp;</th></tr>';
 	if (getConfigVar ('ADDNEW_AT_TOP') == 'yes')
 		printNewItemTR ($options);
 	foreach ($tagtree as $taginfo)
@@ -4986,7 +5087,7 @@ function renderCellFilterPortlet ($preselect, $realm, $cell_list = array(), $byp
 {
 	addJS ('js/tag-cb.js');
 	addJS ('tag_cb.enableNegation()', TRUE);
-
+    echo '<div class=well>';
 	global $pageno, $tabno, $taglist, $tagtree;
 	$filterc =
 	(
@@ -5151,7 +5252,8 @@ END
 		echo '</td></tr>';
 	}
 	echo '</table>';
-	finishPortlet();
+    finishPortlet();
+    echo '</div>';
 }
 
 // Dump all tags in a single SELECT element.
@@ -5163,7 +5265,8 @@ function renderNewEntityTags ($for_realm = '')
 		echo "No tags defined";
 		return;
 	}
-	echo '<div class=tagselector><table border=0 align=center cellspacing=0 class="tagtree">';
+	echo "<b>Tags</b>";
+	echo '<div><table>';
 	printTagCheckboxTable ('taglist', array(), array(), $tagtree, $for_realm);
 	echo '</table></div>';
 }
@@ -5277,11 +5380,12 @@ function renderMyPasswordEditor ()
 
 function renderMyPreferences ()
 {
-	global $configCache;
+    global $configCache;
+    echo "<div class=row-fluid>";
 	startPortlet ('Current configuration');
-	echo "<table cellspacing=0 cellpadding=5 align=center class=widetable width='50%'>\n";
+	echo "<table class='table table-striped'>\n";
 	echo "<tr><th class=tdleft>Option</th>";
-	echo "<th class=tdleft>Value</th></tr>";
+	echo "<th class=tdleft colspan=2>Value</th></tr>";
 	printOpFormIntro ('upd');
 
 	$i = 0;
@@ -5299,7 +5403,7 @@ function renderMyPreferences ()
 				makeHrefProcess(array('op'=>'reset', 'varname'=>$v['varname']))
 				."\">reset</a></td>";
 		else
-			echo "<td class=\"tdleft\">(default)</td>";
+			echo "<td class=\"tdleft\">(Default)</td>";
 		echo "</tr>\n";
 		$i++;
 	}
@@ -5308,7 +5412,8 @@ function renderMyPreferences ()
 	printImageHREF ('SAVE', 'Save changes', TRUE);
 	echo "</td></tr>";
 	echo "</form>";
-	finishPortlet();
+    finishPortlet();
+	echo "</div>";
 }
 
 function renderMyAccount ()
@@ -5316,14 +5421,15 @@ function renderMyAccount ()
 	global $remote_username, $remote_displayname, $expl_tags, $impl_tags, $auto_tags;
 
 	startPortlet ('Current user info');
-	echo '<div style="text-align: left; display: inline-block;">';
-	echo "<table>";
+	echo '<div>';
+	echo "<table class='table'>";
 	echo "<tr><th>Login:</th><td>${remote_username}</td></tr>\n";
 	echo "<tr><th>Name:</th><td>${remote_displayname}</td></tr>\n";
 	echo "<tr><th>Explicit tags:</th><td>" . serializeTags (getExplicitTagsOnly ($expl_tags)) . "</td></tr>\n";
 	echo "<tr><th>Implicit tags:</th><td>" . serializeTags ($impl_tags) . "</td></tr>\n";
 	echo "<tr><th>Automatic tags:</th><td>" . serializeTags ($auto_tags) . "</td></tr>\n";
-	echo '</table></div>';
+    echo '</table></div>';
+    finishPortlet();
 }
 
 function renderMyQuickLinks ()
@@ -5882,7 +5988,19 @@ function renderTextEditor ($file_id)
 	echo "</td></tr>\n</table></form>\n";
 }
 
-function showPathAndSearch ($pageno)
+function showSearch ()
+{
+
+	// Search form.
+    echo '<form class="navbar-form form-search pull-right" name="search" method="get">';
+	echo '<input type=hidden name=page value=search>';
+	// This input will be the first, if we don't add ports or addresses.
+    echo '<input type="text" name=q tabindex=1000><button type="submit" class="btn">Search</button></form>';
+
+}
+
+
+function showPathAndUser ($pageno)
 {
 	// This function returns array of page numbers leading to the target page
 	// plus page number of target page itself. The first element is the target
@@ -5913,8 +6031,11 @@ function showPathAndSearch ($pageno)
 	global $page;
 	// Path.
 	$path = getPath ($pageno);
-	$items = array();
-	foreach (array_reverse ($path) as $no)
+    $items = array();
+
+    echo '<ul class="breadcrumb">';
+
+	foreach ($path as $no)
 	{
 		if (isset ($page[$no]['title']))
 			$title = array
@@ -5942,18 +6063,17 @@ function showPathAndSearch ($pageno)
 			$is_first = FALSE;
 		}
 		$item .= $ancor_tail;
-		$item .= "'>" . $title['name'] . "</a>";
-		$items[] = $item;
-	}
-	// Search form.
-	echo "<div class='searchbox' style='float:right'>";
-	echo "<form name=search method=get>";
-	echo '<input type=hidden name=page value=search>';
-	// This input will be the first, if we don't add ports or addresses.
-	echo "<label>Search:<input type=text name=q size=20 tabindex=1000></label></form></div>";
+        $item .= "'>" . $title['name'] . "</a>";
+        if ($no === end($path)) {
+            echo '<li class=active>'.$item .'</li>';
+        } else {
+            echo '<li>'.$item .'<span class="divider">/</span></li>';
+        }
+    }
+    global $remote_displayname;
+    echo '<li class=pull-right><a href="index.php?page=myaccount&tab=default">' . $remote_displayname . '</a><span class="divider">/</span><a href="?logout">Logout</a></li>';
+    echo '</ul>';
 
-	// Path (breadcrumbs)
-	echo implode(' : ', array_reverse ($items));
 }
 
 function getTitle ($pageno)
@@ -5970,7 +6090,7 @@ function showTabs ($pageno, $tabno)
 	global $tab, $page, $trigger;
 	if (!isset ($tab[$pageno]['default']))
 		return;
-	echo "<div class=greynavbar><ul id=foldertab style='margin-bottom: 0px; padding-top: 10px;'>";
+	echo '<div><ul class="nav nav-tabs">';
 	foreach ($tab[$pageno] as $tabidx => $tabtitle)
 	{
 		// Hide forbidden tabs.
@@ -5982,8 +6102,8 @@ function showTabs ($pageno, $tabno)
 		elseif (!strlen ($tabclass = call_user_func ($trigger[$pageno][$tabidx])))
 			continue;
 		if ($tabidx == $tabno)
-			$tabclass = 'current'; // override any class for an active selection
-		echo "<li><a class=${tabclass}";
+			$tabclass = 'active'; // override any class for an active selection
+		echo '<li class="' . $tabclass . '"><a';
 		echo " href='index.php?page=${pageno}&tab=${tabidx}";
 		$args = array();
 		fillBypassValues ($pageno, $args);
@@ -7802,7 +7922,6 @@ function renderVSTRulesEditor ($vst_id)
 function renderDeployQueue()
 {
 	global $nextorder, $dqtitle;
-	$order = 'odd';
 	$dqcode = getBypassValue();
 	$allq = get8021QDeployQueues();
 	$en_key = $dqcode == 'disabled' ? 'disabled' : 'enabled';
@@ -8364,7 +8483,7 @@ function switchportInfoJS($object_id)
 	$list = trim ($list, ", ");
 
 	addJS ('js/jquery.thumbhover.js');
-	addCSS ('css/jquery.contextmenu.css');
+	addCSS ('css/vendor/jquery.contextmenu.css');
 	addJS ('js/jquery.contextmenu.js');
 	addJS ("enabled_elements = [ $list ];", TRUE);
 	addJS ('js/portinfo.js');
@@ -8767,4 +8886,3 @@ function renderMuninServersEditor()
 	echo '</table>';
 }
 
-?>

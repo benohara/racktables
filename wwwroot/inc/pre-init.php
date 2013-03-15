@@ -24,7 +24,7 @@ $racktables_rootdir = realpath (dirname (__FILE__) . '/..'); // you can not over
 # is to add respective line(s) to secret.php, unless this is a "shared
 # code, multiple instances" deploy, in which case the paths could be changed
 # in the custom entry point wrapper (like own index.php)
-if (! isset ($racktables_staticdir)) // the directory containing 'pix', 'js', 'css' dirs
+if (! isset ($racktables_staticdir)) // the directory containing 'img', 'js', 'css' dirs
 	$racktables_staticdir = $racktables_rootdir;
 if (! isset ($racktables_gwdir)) // the directory containing the 'telnet' and 'ssh' scripts
 	$racktables_gwdir = realpath ($racktables_rootdir . '/../gateways');
@@ -47,7 +47,7 @@ else
 // determine local paths after loading of secret.php (maybe it has overrided racktables_plugins_dir)
 if (! isset ($local_gwdir)) // the directory where RT will search gateway scripts if not found in $racktables_gwdir
 	$local_gwdir = $racktables_plugins_dir . '/gateways';
-if (! isset ($local_staticdir)) // the directory where RT will search static files (js/*, css/*, pix/*) if not found in $racktables_staticdir
+if (! isset ($local_staticdir)) // the directory where RT will search static files (js/*, css/*, img/*) if not found in $racktables_staticdir
 	$local_staticdir = $racktables_plugins_dir;
 
 // (re)connects to DB, stores PDO object in $dbxlink global var

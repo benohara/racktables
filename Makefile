@@ -26,7 +26,7 @@ install-helpers: scripts gateways
 	find $(DESTDIR)$(scriptdir)/scripts -type d -a -name '.git' -exec rm -rf \{\} \; -prune
 	find $(DESTDIR)$(scriptdir)/gateways -type d -a -name '.git' -exec rm -rf \{\} \; -prune
 
-install-static: wwwroot/css wwwroot/js wwwroot/pix
+install-static: wwwroot/css wwwroot/js wwwroot/img
 	$(INSTALL_DIR) $(DESTDIR)$(staticdir)
 	cp -r $^ $(DESTDIR)$(staticdir)
 	find $(DESTDIR)$(staticdir) -type d -a -name '.git' -exec rm -rf \{\} \; -prune

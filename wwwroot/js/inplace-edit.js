@@ -22,7 +22,7 @@ $(document).ready (function() {
 		container
 			.append
 			(
-				$('<div class="empty" style="margin-left: 10px; width:12px; height:12px;"><img class="edit-btn" src="?module=chrome&uri=pix/pencil-icon.png" title="Edit text" /></div>')
+				$('<div class="empty" style="margin-left: 10px; width:12px; height:12px;"><img class="edit-btn" src="?module=chrome&uri=img/pencil-icon.png" title="Edit text" /></div>')
 				.click(onPencilClick)
 			);
 	});
@@ -84,7 +84,7 @@ function onPencilClick (event) {
 			})
 		.appendTo(group);
 	group.append('&nbsp;');
-	btn = $('<img src="?module=chrome&uri=pix/tango-document-save-16x16.png" title="Save changes" />')
+	btn = $('<img src="?module=chrome&uri=img/tango-document-save-16x16.png" title="Save changes" />')
 		.css('cursor', 'pointer')
 		.click( onFormSubmit )
 		.appendTo(group);
@@ -117,7 +117,7 @@ function doSetCaretPosition (input, iCaretPos) {
 function onFormSubmit () {
 	var text = input.val();
 	input.attr('disabled', 'true');
-	btn.replaceWith('<img src="?module=chrome&uri=pix/ajax-loader.gif" title="Please wait" />');
+	btn.replaceWith('<img src="?module=chrome&uri=img/ajax-loader.gif" title="Please wait" />');
 	waiting_response = true;
 
 	var op = '';
