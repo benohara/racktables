@@ -369,7 +369,7 @@ function renderLocationFilterPortlet ()
 
 		foreach ($subtree as $location_id => $location)
 		{
-			echo "<tr><td class=tagbox style='padding-left: " . ($level * 16) . "px;'><label>";
+			echo "<tr><td style='padding-left: " . ($level * 16) . "px;'><label>";
 			$checked = (in_array ($location['id'], $_SESSION['locationFilter'])) ? 'checked' : '';
 			echo "<label><input type=checkbox name='location_id[]' value='${location['id']}'${checked}>${location['name']}";
 			echo "</label></td></tr>\n";
@@ -440,7 +440,8 @@ function renderRackspace ()
 		$rackCount += count($rackList);
 	}
 
-	echo "<table class=objview border=0 width='100%'><tr><td class=pcleft>";
+    echo "<div class=row-fluid>";
+    echo "<div class=span9>";
 
 	if (! renderEmptyResults($cellfilter, 'racks', $rackCount))
 	{
@@ -449,10 +450,9 @@ function renderRackspace ()
 		$rackwidth = getRackImageWidth();
 		// Zero value effectively disables the limit.
 		$maxPerRow = getConfigVar ('RACKS_PER_ROW');
-		$order = 'odd';
 		if (count ($rows))
 		{
-			echo '<table border=0 cellpadding=10 class=cooltable>';
+			echo '<table class="table table-striped">';
 			echo '<tr><th class=tdleft>Location</th><th class=tdleft>Row</th><th class=tdleft>Racks</th></tr>';
 			foreach ($rows as $row)
 			{
@@ -464,11 +464,11 @@ function renderRackspace ()
 				if (($location_id != '' and !in_array ($location_id, $_SESSION['locationFilter'])) or (!count ($rackList) and count ($cellfilter['expression'])))
 					continue;
 				$rackListIdx = 0;
-				echo "<tr class=row_${order}><th class=tdleft>";
+				echo "<tr><th class=tdleft>";
 				if ($location_id)
 					echo "<a href='".makeHref(array('page'=>'location', 'location_id'=>$location_id))."${cellfilter['urlextra']}'>${row['location_name']}</a>";
 				echo "</th><th class=tdleft><a href='".makeHref(array('page'=>'row', 'row_id'=>$row_id))."${cellfilter['urlextra']}'>${row_name}</a></th>";
-				echo "<th class=tdleft><table border=0 cellspacing=5><tr>";
+				echo "<th class=tdleft><table><tr>";
 				if (!count ($rackList))
 					echo "<td>(empty row)</td>";
 				else
@@ -478,7 +478,7 @@ function renderRackspace ()
 						{
 							echo '</tr></table></th></tr>';
 							echo "<tr class=row_${order}><th class=tdleft></th><th class=tdleft>${row_name} (continued)";
-							echo "</th><th class=tdleft><table border=0 cellspacing=5><tr>";
+							echo "</th><th class=tdleft><table><tr>";
 						}
 						echo "<td align=center valign=bottom><a href='".makeHref(array('page'=>'rack', 'rack_id'=>$rack['id']))."'>";
 						echo "<img border=0 width=${rackwidth} height=";
@@ -496,11 +496,12 @@ function renderRackspace ()
 		else
 			echo "<h2>No rows found</h2>\n";
 	}
-	echo '</td><td class=pcright width="25%">';
+	echo '</div>';
+	echo '<div class=span3>';
 	renderCellFilterPortlet ($cellfilter, 'rack', $found_racks);
 	echo "<br>\n";
 	renderLocationFilterPortlet ();
-	echo "</td></tr></table>\n";
+    echo "</div></div></div>";
 }
 
 function renderLocationRowForEditor ($subtree, $level = 0)
@@ -804,7 +805,7 @@ function renderRackSortForm ($row_id)
         update : function () {
           serial = $('#sortRacks').sortable('serialize');
           $.ajax({
-            url: 'index.php?module=ajax&ac=upd-rack-sort-order',
+            url: '?module=ajax&ac=upd-rack-sort-order',
             type: 'post',
             data: serial,
           });
@@ -1180,11 +1181,10 @@ function renderObject ($object_id)
 	global $nextorder, $virtual_obj_types;
 	$info = spotEntity ('object', $object_id);
 	amplifyCell ($info);
-	// Main layout starts.
-	echo "<table border=0 class=objectview cellspacing=0 cellpadding=0>";
-	echo "<tr><td colspan=2 align=center><h1>${info['dname']}</h1></td></tr>\n";
-	// left column with uknown number of portlets
-	echo "<tr><td class=pcleft>";
+    // Main layout starts.
+    echo "<div class=row-fluid>";
+    echo "<div class=span8>";
+	echo "<center><h1>${info['dname']}</h1>\n";
 
 	// display summary portlet
 	$summary  = array();
@@ -1241,7 +1241,7 @@ function renderObject ($object_id)
 			)
 		)."&"
 	));
-	renderEntitySummary ($info, 'summary', $summary);
+	renderEntitySummary ($info, 'Summary', $summary);
 
 	if (strlen ($info['comment']))
 	{
@@ -1273,7 +1273,7 @@ function renderObject ($object_id)
 
 	if (count ($info['ports']))
 	{
-		startPortlet ('ports and links');
+		startPortlet ('Ports and Links');
 		$hl_port_id = 0;
 		if (isset ($_REQUEST['hl_port_id']))
 		{
@@ -1281,7 +1281,7 @@ function renderObject ($object_id)
 			$hl_port_id = $_REQUEST['hl_port_id'];
 			addAutoScrollScript ("port-$hl_port_id");
 		}
-		echo "<table cellspacing=0 cellpadding='5' align='center' class='widetable'>";
+		echo "<table class='table table-striped'>";
 		echo '<tr><th class=tdleft>Local name</th><th class=tdleft>Visible label</th>';
 		echo '<th class=tdleft>Interface</th><th class=tdleft>L2 address</th>';
 		echo '<th class=tdcenter colspan=2>Remote object and port</th>';
@@ -1395,10 +1395,10 @@ function renderObject ($object_id)
 	}
 
 	renderSLBTriplets ($info);
-	echo "</td>\n";
 
 	// After left column we have (surprise!) right column with rackspace portlet only.
-	echo "<td class=pcright>";
+	echo "</div>";
+	echo "<div class=span4>";
 	if (!in_array($info['objtype_id'], $virtual_obj_types))
 	{
 		// rackspace portlet
@@ -1408,8 +1408,7 @@ function renderObject ($object_id)
 		echo '<br>';
 		finishPortlet();
 	}
-	echo "</td></tr>";
-	echo "</table>\n";
+	echo "</div>\n";
 }
 
 function renderRackMultiSelect ($sname, $racks, $selected)
@@ -3241,16 +3240,19 @@ function renderAddMultipleObjectsForm ()
 		echo "</tr>\n";
 		$tabindex++;
 	}
-	echo "</table>\n";
+    echo "</table>\n";
 	echo "<input type=submit class=btn value='Go!'>";
-	finishPortlet();
+
+	echo "</form>\n";
+	
+    finishPortlet();
+
     echo '</div>';
     echo '<div class=span3>';
 		renderNewEntityTags ('object');
-
-	echo "</form>\n";
-	echo "</div>\n";
-
+	echo "</div>";
+    echo "</div>";
+    echo "<div class=row-fluid>";
 	// create a list containing only virtual object types
 	$virt_typelist = $typelist;
 	foreach ($virt_typelist['other'] as $key => $value)
@@ -3261,7 +3263,7 @@ function renderAddMultipleObjectsForm ()
 	startPortlet ('Virtual objects');
 	printOpFormIntro ('addObjects');
 	echo "<input type=hidden name=virtual_objects value=''>\n";
-	echo '<table border=0 align=center>';
+    echo '<table class="table">';
 	echo "<tr><th>Object type</th><th>Common name</th><th>Tags</th></tr>\n";
 	for ($i = 0; $i < $max; $i++)
 	{
@@ -3279,9 +3281,12 @@ function renderAddMultipleObjectsForm ()
 		echo "</tr>\n";
 		$tabindex++;
 	}
-	echo "<tr><td class=submit colspan=5><input type=submit name=got_fast_data value='Go!'></td></tr>\n";
+	echo "<tr><td class=submit><input type=submit name=got_fast_data value='Go!'></td></tr>\n";
 	echo "</form></table>\n";
-	finishPortlet();
+    finishPortlet();
+
+    echo "</div>";
+    echo "<div class=row-fluid>";
 
 	// create a list excluding location object types
 	$lot_typelist = $typelist;
@@ -3292,7 +3297,7 @@ function renderAddMultipleObjectsForm ()
 	}
 	startPortlet ('Same type, same tags');
 	printOpFormIntro ('addLotOfObjects');
-	echo "<table border=0 align=center><tr><th>names</th><th>type</th></tr>";
+	echo "<table class='table'><tr><th>names</th><th>type</th></tr>";
 	echo "<tr><td rowspan=3><textarea name=namelist cols=40 rows=25>\n";
 	echo "</textarea></td><td valign=top>";
 	printNiftySelect ($lot_typelist, array ('name' => 'global_type_id'), getConfigVar ('DEFAULT_OBJECT_TYPE'));
@@ -3304,6 +3309,7 @@ function renderAddMultipleObjectsForm ()
 	echo "<tr><td colspan=2><input type=submit name=got_very_fast_data value='Go!'></td></tr></table>\n";
 	echo "</form>\n";
 	finishPortlet();
+    echo "</div></div>";
 }
 
 function searchHandler()
@@ -3350,7 +3356,7 @@ function renderSearchResults ($terms, $summary)
 			switch ($where)
 			{
 				case 'object':
-					startPortlet ("<a href='index.php?page=depot'>Objects</a>");
+					startPortlet ("<a href='?page=depot'>Objects</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					echo '<tr><th>what</th><th>why</th></tr>';
 					foreach ($what as $obj)
@@ -3430,9 +3436,9 @@ function renderSearchResults ($terms, $summary)
 				case 'ipv4net':
 				case 'ipv6net':
 					if ($where == 'ipv4net')
-						startPortlet ("<a href='index.php?page=ipv4space'>IPv4 networks</a>");
+						startPortlet ("<a href='?page=ipv4space'>IPv4 networks</a>");
 					elseif ($where == 'ipv6net')
-						startPortlet ("<a href='index.php?page=ipv6space'>IPv6 networks</a>");
+						startPortlet ("<a href='?page=ipv6space'>IPv6 networks</a>");
 
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $cell)
@@ -3467,7 +3473,7 @@ function renderSearchResults ($terms, $summary)
 									'hl_ip' => $fmt,
 								)) . "'>${fmt}</a></td>";
 						else
-							echo "<a href='index.php?page=ipaddress&tab=default&ip=${fmt}'>${fmt}</a></td>";
+							echo "<a href='?page=ipaddress&tab=default&ip=${fmt}'>${fmt}</a></td>";
 						echo "<td class=tdleft>${addr['name']}</td></tr>";
 						$order = $nextorder[$order];
 					}
@@ -3475,7 +3481,7 @@ function renderSearchResults ($terms, $summary)
 					finishPortlet();
 					break;
 				case 'ipv4rspool':
-					startPortlet ("<a href='index.php?page=ipv4slb&tab=rspools'>RS pools</a>");
+					startPortlet ("<a href='?page=ipv4slb&tab=rspools'>RS pools</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $cell)
 					{
@@ -3488,7 +3494,7 @@ function renderSearchResults ($terms, $summary)
 					finishPortlet();
 					break;
 				case 'ipv4vs':
-					startPortlet ("<a href='index.php?page=ipv4slb&tab=default'>Virtual services</a>");
+					startPortlet ("<a href='?page=ipv4slb&tab=default'>Virtual services</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $cell)
 					{
@@ -3501,7 +3507,7 @@ function renderSearchResults ($terms, $summary)
 					finishPortlet();
 					break;
 				case 'user':
-					startPortlet ("<a href='index.php?page=userlist'>Users</a>");
+					startPortlet ("<a href='?page=userlist'>Users</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $item)
 					{
@@ -3514,7 +3520,7 @@ function renderSearchResults ($terms, $summary)
 					finishPortlet();
 					break;
 				case 'file':
-					startPortlet ("<a href='index.php?page=files'>Files</a>");
+					startPortlet ("<a href='?page=files'>Files</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $cell)
 					{
@@ -3527,7 +3533,7 @@ function renderSearchResults ($terms, $summary)
 					finishPortlet();
 					break;
 				case 'rack':
-					startPortlet ("<a href='index.php?page=rackspace'>Racks</a>");
+					startPortlet ("<a href='?page=rackspace'>Racks</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $cell)
 					{
@@ -3540,7 +3546,7 @@ function renderSearchResults ($terms, $summary)
 					finishPortlet();
 					break;
 				case 'vlan':
-					startPortlet ("<a href='index.php?page=8021q'>VLANs</a>");
+					startPortlet ("<a href='?page=8021q'>VLANs</a>");
 					echo '<table border=0 cellpadding=5 cellspacing=0 align=center class=cooltable>';
 					foreach ($what as $vlan)
 					{
@@ -3822,7 +3828,7 @@ function renderConfigMainpage ()
 	echo '<ul>';
 	foreach ($page as $cpageno => $cpage)
 		if (isset ($cpage['parent']) and $cpage['parent'] == $pageno  && permitted($cpageno))
-			echo "<li><a href='index.php?page=${cpageno}'>" . $cpage['title'] . "</li>\n";
+			echo "<li><a href='?page=${cpageno}'>" . $cpage['title'] . "</li>\n";
 	echo '</ul>';
 }
 
@@ -4521,7 +4527,7 @@ function renderTagStats ()
 				echo '&nbsp;';
 			else
 			{
-				echo "<a href='index.php?page=" . $pagebyrealm[$realm] . "&cft[]=${taginfo['id']}'>";
+				echo "<a href='?page=" . $pagebyrealm[$realm] . "&cft[]=${taginfo['id']}'>";
 				echo $taginfo['refcnt'][$realm] . '</a>';
 			}
 			echo '</td>';
@@ -5264,11 +5270,13 @@ function renderNewEntityTags ($for_realm = '')
 	{
 		echo "No tags defined";
 		return;
-	}
+    }
+
+	echo "<div class=well>";
 	echo "<b>Tags</b>";
 	echo '<div><table>';
 	printTagCheckboxTable ('taglist', array(), array(), $tagtree, $for_realm);
-	echo '</table></div>';
+	echo '</table></div></div>';
 }
 
 function renderTagRollerForRow ($row_id)
@@ -5767,7 +5775,7 @@ function printIPNetInfoTDs ($netinfo, $decor = array())
 			echo '</a>';
 	}
 	if (isset ($netinfo['id']))
-		echo "<a name='net-${netinfo['id']}' href='index.php?page=ipv${ip_ver}net&id=${netinfo['id']}'>";
+		echo "<a name='net-${netinfo['id']}' href='?page=ipv${ip_ver}net&id=${netinfo['id']}'>";
 	echo $formatted;
 	if (isset ($netinfo['id']))
 		echo '</a>';
@@ -5799,7 +5807,7 @@ function printIPNetInfoTDs ($netinfo, $decor = array())
 	{
 		echo niftyString ($netinfo['name']);
 		if (count ($netinfo['etags']))
-			echo '<br><small>' . serializeTags ($netinfo['etags'], "index.php?page=ipv${ip_ver}space&tab=default&") . '</small>';
+			echo '<br><small>' . serializeTags ($netinfo['etags'], "?page=ipv${ip_ver}space&tab=default&") . '</small>';
 	}
 	echo "</td>";
 }
@@ -5915,7 +5923,7 @@ function renderRouterCell ($ip_bin, $ifname, $cell)
 	if (strlen ($ifname))
 		echo '@' . $ifname;
 	echo "</td>";
-	echo "<td><a href='index.php?page=object&object_id=${cell['id']}&hl_ip=${dottedquad}'><strong>${cell['dname']}</strong></a></td>";
+	echo "<td><a href='?page=object&object_id=${cell['id']}&hl_ip=${dottedquad}'><strong>${cell['dname']}</strong></a></td>";
 	echo "</td></tr><tr><td>";
 	printImageHREF ('router');
 	echo "</td></tr><tr><td>";
@@ -6045,7 +6053,7 @@ function showPathAndUser ($pageno)
 			);
 		else
 			$title = callHook ('dynamic_title_decoder', $no);
-		$item = "<a href='index.php?";
+		$item = "<a href='?";
 		if (! isset ($title['params']['page']))
 			$title['params']['page'] = $no;
 		if (! isset ($title['params']['tab']))
@@ -6071,7 +6079,7 @@ function showPathAndUser ($pageno)
         }
     }
     global $remote_displayname;
-    echo '<li class=pull-right><a href="index.php?page=myaccount&tab=default">' . $remote_displayname . '</a><span class="divider">/</span><a href="?logout">Logout</a></li>';
+    echo '<li class=pull-right><a href="?page=myaccount&tab=default">' . $remote_displayname . '</a><span class="divider">/</span><a href="?logout">Logout</a></li>';
     echo '</ul>';
 
 }
@@ -6104,7 +6112,7 @@ function showTabs ($pageno, $tabno)
 		if ($tabidx == $tabno)
 			$tabclass = 'active'; // override any class for an active selection
 		echo '<li class="' . $tabclass . '"><a';
-		echo " href='index.php?page=${pageno}&tab=${tabidx}";
+		echo " href='?page=${pageno}&tab=${tabidx}";
 		$args = array();
 		fillBypassValues ($pageno, $args);
 		foreach ($args as $param_name => $param_value)
@@ -7199,7 +7207,7 @@ function renderVLANInfo ($vlan_ck)
 	echo '<table border=0 class=objectview cellspacing=0 cellpadding=0>';
 	echo '<tr><td colspan=2 align=center><h1>' . formatVLANAsRichText ($vlan) . '</h1></td></tr>';
 	echo "<tr><td class=pcleft width='50%'>";
-	startPortlet ('summary');
+	startPortlet ('Summary');
 	echo "<table border=0 cellspacing=0 cellpadding=3 width='100%'>";
 	echo "<tr><th width='50%' class=tdright>Domain:</th><td class=tdleft>";
 	echo niftyString ($vlan['domain_descr'], 0) . '</td></tr>';
@@ -8572,7 +8580,7 @@ function renderObjectCactiGraphs ($object_id)
 		$text = "(graph ${graph_id} on server ${graph['server_id']})";
 		echo "<tr><td>";
 		echo "<a href='${cacti_url}/graph.php?action=view&local_graph_id=${graph_id}&rra_id=all' target='_blank'>";
-		echo "<img src='index.php?module=image&img=cactigraph&object_id=${object_id}&server_id=${graph['server_id']}&graph_id=${graph_id}' alt='${text}' title='${text}'></a></td><td>";
+		echo "<img src='?module=image&img=cactigraph&object_id=${object_id}&server_id=${graph['server_id']}&graph_id=${graph_id}' alt='${text}' title='${text}'></a></td><td>";
 		if(permitted('object','cacti','del'))
 		{
 			echo "<a href='" . makeHrefProcess (array ('op' => 'del', 'server_id' => $graph['server_id'], 'graph_id' => $graph_id));
@@ -8625,7 +8633,7 @@ function renderObjectMuninGraphs ($object_id)
 		$text = "(graph ${graph_name} on server ${graph['server_id']})";
 		echo "<tr><td>";
 		echo "<a href='${munin_url}/${domain}/${object['dname']}/${graph_name}.html' target='_blank'>";
-		echo "<img src='index.php?module=image&img=muningraph&object_id=${object_id}&server_id=${graph['server_id']}&graph=${graph_name}' alt='${text}' title='${text}'></a></td>";
+		echo "<img src='?module=image&img=muningraph&object_id=${object_id}&server_id=${graph['server_id']}&graph=${graph_name}' alt='${text}' title='${text}'></a></td>";
 		echo "<td><a href='" . makeHrefProcess (array ('op' => 'del', 'server_id' => $graph['server_id'], 'graph' => $graph_name));
 		echo "' onclick=\"javascript:return confirm('Are you sure you want to delete the graph?')\">";
 		echo getImageHREF ('Cut', 'Unlink graph') . "</a>&nbsp; &nbsp;${graph['caption']}";

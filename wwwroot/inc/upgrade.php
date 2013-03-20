@@ -1849,7 +1849,7 @@ else
 		}
 		else
 		{
-			echo '<form method=post action="index.php?module=upgrade"><tr><th>Wait!</th>';
+			echo '<form method=post action="?module=upgrade"><tr><th>Wait!</th>';
 			echo '<td><p>RackTables database upgrades sometimes go wrong because of assorted reasons. ';
 			echo 'It is <strong>highly recommended</strong> to make a database backup before ';
 			echo 'proceeding any further. <tt>mysqldump</tt> and <tt>PHPMyAdmin</tt> are convenient ';

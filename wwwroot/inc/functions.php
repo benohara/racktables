@@ -1867,7 +1867,7 @@ function buildRedirectURL ($nextpage = NULL, $nexttab = NULL, $moreArgs = array(
 		$nextpage = $pageno;
 	if ($nexttab === NULL)
 		$nexttab = $tabno;
-	$url = "index.php?page=${nextpage}&tab=${nexttab}";
+	$url = "?page=${nextpage}&tab=${nexttab}";
 
 	if ($nextpage === $pageno)
 		fillBypassValues ($nextpage, $moreArgs);
@@ -2726,7 +2726,7 @@ function serializeFileLinks ($links, $scissors = FALSE)
 			$ret .= "<a href='" . makeHrefProcess(array('op'=>'unlinkFile', 'link_id'=>$link_id)) . "'";
 			$ret .= getImageHREF ('cut') . '</a> ';
 		}
-		$ret .= sprintf("<a href='index.php?%s%s'>%s</a>", $params, $li['entity_id'], $li['name']);
+		$ret .= sprintf("<a href='?%s%s'>%s</a>", $params, $li['entity_id'], $li['name']);
 		$comma = '<br>';
 	}
 	return $ret;
@@ -2805,7 +2805,7 @@ function makeHref ($params = array())
 			foreach ($value as $sub_value)
 				$tmp[] = urlencode ($key) . '=' . urlencode ($sub_value);
 	}
-	return 'index.php?' . implode ('&', $tmp);
+	return '?' . implode ('&', $tmp);
 }
 
 function makeHrefProcess ($params = array())
@@ -4605,7 +4605,7 @@ function formatPortIIFOIF ($port)
 // link title is "hostname portname" if both parts are defined
 function formatPortLink($host_id, $hostname, $port_id, $portname, $a_class = '')
 {
-	$href = 'index.php?page=object&object_id=' . urlencode($host_id);
+	$href = '?page=object&object_id=' . urlencode($host_id);
 	$additional = '';
 	if (isset ($port_id))
 	{

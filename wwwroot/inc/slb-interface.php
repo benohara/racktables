@@ -28,7 +28,7 @@ function renderSLBEntityCell ($cell, $highlighted = FALSE)
 	switch ($cell['realm'])
 	{
 	case 'object':
-		echo "<tr><td><a class='$a_class' href='index.php?page=object&object_id=${cell['id']}'>${cell['dname']}</a>";
+		echo "<tr><td><a class='$a_class' href='?page=object&object_id=${cell['id']}'>${cell['dname']}</a>";
 		echo "</td></tr><tr><td>";
 		printImageHREF ('LB');
 		echo "</td></tr>";
@@ -37,13 +37,13 @@ function renderSLBEntityCell ($cell, $highlighted = FALSE)
 		echo "<tr><td rowspan=3 width='5%'>";
 		printImageHREF ('VS');
 		echo "</td><td>";
-		echo "<a class='$a_class' href='index.php?page=ipv4vs&vs_id=${cell['id']}'>";
+		echo "<a class='$a_class' href='?page=ipv4vs&vs_id=${cell['id']}'>";
 		echo $cell['dname'] . "</a></td></tr><tr><td>";
 		echo $cell['name'] . '</td></tr>';
 		break;
 	case 'ipv4rspool':
 		echo "<tr><td>";
-		echo "<a class='$a_class' href='index.php?page=ipv4rspool&pool_id=${cell['id']}'>";
+		echo "<a class='$a_class' href='?page=ipv4rspool&pool_id=${cell['id']}'>";
 		echo !strlen ($cell['name']) ? "ANONYMOUS pool [${cell['id']}]" : niftyString ($cell['name']);
 		echo "</a></td></tr><tr><td>";
 		printImageHREF ('RS pool');

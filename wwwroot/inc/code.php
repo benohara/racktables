@@ -872,7 +872,7 @@ function locateSyntaxError ($stack)
 
 function refRCLineno ($ln)
 {
-	return "<a href='index.php?page=perms&tab=default#line${ln}'>line ${ln}</a>";
+	return "<a href='?page=perms&tab=default#line${ln}'>line ${ln}</a>";
 }
 
 // Scan the given expression and return any issues found about its autotags.

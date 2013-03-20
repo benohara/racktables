@@ -176,7 +176,7 @@ class RTPermissionDenied extends RackTablesError
 		echo serializeTags ($auto_tags) . "&nbsp;</td></tr>\n";
 		echo "<tr><th width='50%' class=tdright>Requested page:</th><td class=tdleft>${pageno}</td></tr>\n";
 		echo "<tr><th width='50%' class=tdright>Requested tab:</th><td class=tdleft>${tabno}</td></tr>\n";
-		echo "<tr><td colspan=2 align=center>Click <a href='index.php?logout'>here</a> to logout.</td></tr>\n";
+		echo "<tr><td colspan=2 align=center>Click <a href='?logout'>here</a> to logout.</td></tr>\n";
 		echo "</table>\n";
 		echo "</body></html>";
 	}

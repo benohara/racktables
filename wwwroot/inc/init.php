@@ -105,7 +105,7 @@ $pageheaders = array
 (
 	100 => "<link rel='ICON' type='image/x-icon' href='?module=chrome&uri=img/favicon.ico' />",
 );
-addCSS ('css/main.css');
+//addCSS ('css/main.css');
 
 if (!isset ($script_mode) or $script_mode !== TRUE)
 {

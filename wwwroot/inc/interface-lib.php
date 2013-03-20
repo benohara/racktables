@@ -810,12 +810,12 @@ function serializeTags ($chain, $baseurl = '')
 
 function startPortlet ($title = '')
 {
-	echo "<div><h2>${title}</h2>";
+	echo "<h2>${title}</h2>";
 }
 
 function finishPortlet ()
 {
-	echo "</div>";
+   // echo "</div>";
 }
 
 function getPageName ($page_code)
